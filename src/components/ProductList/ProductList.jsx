@@ -25,6 +25,23 @@ const ProductList = () => {
     const [addedItems, setAddedItems] = useState([]);
     const {tg, queryId} = useTelegram();
 
+
+    const [films, setFilms] = useState([]);
+
+    useEffect(() => {
+
+        (async () => {
+            const filmsResponse = await fetch('http://localhost:8000/films', {
+                method: 'GET',
+            })
+
+            setFilms(filmsResponse)
+        })()
+
+    }, []);
+
+
+
     const onSendData = useCallback(() => {
         const data = {
             products: addedItems,
@@ -47,14 +64,14 @@ const ProductList = () => {
         }
     }, [onSendData])
 
-    const onAdd = (product) => {
-        const alreadyAdded = addedItems.find(item => item.id === product.id);
+    const onAdd = (film) => {
+        const alreadyAdded = addedItems.find(item => item.id === film.id);
         let newItems = [];
 
         if(alreadyAdded) {
-            newItems = addedItems.filter(item => item.id !== product.id);
+            newItems = addedItems.filter(item => item.id !== film.id);
         } else {
-            newItems = [...addedItems, product];
+            newItems = [...addedItems, film];
         }
 
         setAddedItems(newItems)
@@ -71,7 +88,7 @@ const ProductList = () => {
 
     return (
         <div className={'list'}>
-            {products.map(item => (
+            {films.map(item => (
                 <ProductItem
                     product={item}
                     onAdd={onAdd}
