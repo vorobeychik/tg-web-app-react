@@ -31,11 +31,11 @@ const ProductList = () => {
     useEffect(() => {
 
         (async () => {
-            const filmsResponse = await fetch('http://localhost:8000/films', {
-                method: 'GET',
-            })
+            const filmsResponse = await fetch('http://localhost:8000/films')
+            const res = await filmsResponse.json()
+            console.log(res)
 
-            setFilms(filmsResponse)
+            setFilms(res)
         })()
 
     }, []);
@@ -88,12 +88,12 @@ const ProductList = () => {
 
     return (
         <div className={'list'}>
-            {films.map(item => (
-                <ProductItem
-                    product={item}
-                    onAdd={onAdd}
-                    className={'item'}
-                />
+                {films.map(item => (
+                    <ProductItem
+                        product={item}
+                        onAdd={onAdd}
+                        className={'item'}
+                    />
             ))}
         </div>
     );
